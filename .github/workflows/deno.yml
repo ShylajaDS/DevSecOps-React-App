@@ -1,42 +1,39 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# This workflow will install Deno then run `deno lint` and `deno test`.
-# For more information see: https://github.com/denoland/setup-deno
-
-name: Deno
+name: React CI
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
   pull_request:
-    branches: ["main"]
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Setup repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Deno
-        # uses: denoland/setup-deno@v1
-        uses: denoland/setup-deno@61fe2df320078202e33d7d5ad347e7dcfa0e8f31  # v1.1.2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          deno-version: v1.x
+          node-version: '20'
 
-      # Uncomment this step to verify the use of 'deno fmt' on each commit.
-      # - name: Verify formatting
-      #   run: deno fmt --check
+      - name: Install dependencies
+        run: npm install
 
-      - name: Run linter
-        run: deno lint
+      - name: Run lint
+        run: npm run lint
 
       - name: Run tests
-        run: deno test -A
+        run: npm test -- --watchAll=false
+
+      - name: Build project
+        run: npm run build
+
+      # Optional: Inject secrets if needed
+      # - name: Set environment variables
+      #   run: echo "REACT_APP_API_KEY=${{ secrets.REACT_APP_API_KEY }}" >> $GITHUB_ENV
