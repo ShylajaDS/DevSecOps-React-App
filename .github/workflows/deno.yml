@@ -25,15 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run lint
-        run: npm run lint
+      # 🔴 Removed this because "lint" script is missing
+      # - name: Run lint
+      #   run: npm run lint
 
       - name: Run tests
         run: npm test -- --watchAll=false
 
       - name: Build project
         run: npm run build
-
-      # Optional: Inject secrets if needed
-      # - name: Set environment variables
-      #   run: echo "REACT_APP_API_KEY=${{ secrets.REACT_APP_API_KEY }}" >> $GITHUB_ENV
